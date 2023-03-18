@@ -24,32 +24,53 @@ namespace FundNotice
         }
 
         //获取基金历史净值
-        public static void FundHistoryWorth(string fundId, DateTime startDate, DateTime endData)
+        public static string FundHistoryWorth(string fundId, DateTime startDate, DateTime endData)
         {
             string startDateStr = startDate.ToString("yyyy-MM-dd"),
                 endDateStr = endData.ToString("yyyy-MM-dd");
             using HttpClient httpClient = new();
-            var res = httpClient.GetAsync(@$"http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz
-                                            &code={fundId}
-                                            &page=1
-                                            &per=20
-                                            &sdate=2020-09-01
-                                            &edate=2020-09-18").GetAwaiter().GetResult();
+            var res = httpClient.GetAsync(@$"http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code={fundId}&page=1&per=20&sdate={startDateStr}&edate={endDateStr}").GetAwaiter().GetResult();
 
-            var historyWorthRes = res.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return res.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         }
 
     }
 
     public class FundTodayInfo
     {
+        /// <summary>
+        /// 基金代码
+        /// </summary>
         public string fundcode { get; set; }
+        /// <summary>
+        /// 基金名称
+        /// </summary>
         public string name { get; set; }
+        /// <summary>
+        /// 净值日期
+        /// </summary>
         public string jzrq { get; set; }
         public string dwjz { get; set; }
+        /// <summary>
+        /// 净值估算
+        /// </summary>
         public string gsz { get; set; }
+        /// <summary>
+        /// 估算涨幅
+        /// </summary>
         public string gszzl { get; set; }
+        /// <summary>
+        /// 估值时间
+        /// </summary>
         public string gztime { get; set; }
+    }
+
+    public class HistoryWorth
+    {
+        public string content { get; set; }
+        public int records { get; set; }
+        public int pages { get; set; }
+        public int curpage { get; set; }
     }
 
 }
