@@ -51,13 +51,13 @@ VALUES
             return SqlServerHelper.InsertDataToSqlServer(sqlCommand, body) > 0;
         }
 
-        public static float GetNetWorthFromHistory(string content)
+        public static float GetNetWortByFixedDate(string content)
         {
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(content);
 
             int i = 0;
-            float netWorthVal = null;
+            float netWorthVal = 0f;
             foreach (var item in htmlDocument.DocumentNode.SelectNodes("//table"))
             {
                 var tableId = item.Id;
@@ -82,6 +82,7 @@ VALUES
                     foreach (HtmlNode bodytrItem in bodyItem.SelectNodes(".//tr"))
                     {
                         netWorthVal = float.Parse(bodytrItem.SelectNodes("th|td")[i - 1].InnerText);
+                        break;
                     }
                 }
             }

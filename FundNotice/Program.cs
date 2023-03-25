@@ -1,10 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FundNotice;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks.Dataflow;
+using Newtonsoft.Json;
 
 Console.WriteLine("Hello, World!");
 
@@ -47,7 +43,13 @@ if (purchaseDate != null)
 {
     string res = HttpClientHelper.FundHistoryWorth(fundId, purchaseDate, purchaseDate);
     res = res.Replace("var apidata=", "").TrimEnd(';');
-    var sss = JsonSerializer.Deserialize<HistoryWorth>(res);
+    var asdasd = JsonConvert.DeserializeObject<HistoryWorth>(res);
+    float fixedDateNetworth = Business.GetNetWortByFixedDate(asdasd.content);
+    SqlServerHelper.InsertDataToSqlServer(@"INSERT INTO dbo.FundsPurchaseInfo
+    (fundId,fundName,purchaseDate,netWorth)
+VALUES
+    (@fundId,@fundName, @purchaseDate, @networth);",
+        new { fundId = fundId, fundName ="test",purchaseDate = purchaseDate, networth = fixedDateNetworth.ToString("0.0000") });
 }
 
 Console.WriteLine($"User input string:{fundId}");

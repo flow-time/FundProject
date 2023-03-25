@@ -1,9 +1,5 @@
 using FundNotice;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace FundNotice_Test
 {
@@ -44,9 +40,8 @@ namespace FundNotice_Test
             string res = HttpClientHelper.FundHistoryWorth(fundId, DateTime.Parse(startDateStr), DateTime.Parse(endDateStr));
             res = res.Replace("var apidata=", "").TrimEnd(';');
             var asdasd = JsonConvert.DeserializeObject<HistoryWorth>(res);
-
-          
-            Assert.IsNotNull(netWorthVal);
+            float val = Business.GetNetWortByFixedDate(asdasd.content);
+            Assert.IsNotNull(asdasd);
         }
     }
 }
