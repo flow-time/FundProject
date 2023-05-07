@@ -65,12 +65,23 @@ namespace FundNotice
         public string gztime { get; set; }
     }
 
-    public class HistoryWorth
+    public class FundHistoryWorth
     {
         public string content { get; set; }
         public int records { get; set; }
         public int pages { get; set; }
         public int curpage { get; set; }
+    }
+
+    public class FundTodayEntity
+    {
+        public string fundcode { get; set; }
+        public string name { get; set; }
+        public string jzrq { get; set; }
+        public string dwjz { get; set; }
+        public string gsz { get; set; }
+        public string gszzl { get; set; }
+        public string gztime { get; set; }
     }
 
 }

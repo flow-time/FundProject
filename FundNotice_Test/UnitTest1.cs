@@ -39,9 +39,18 @@ namespace FundNotice_Test
             //https://www.cnblogs.com/fishyues/p/10232822.html
             string res = HttpClientHelper.FundHistoryWorth(fundId, DateTime.Parse(startDateStr), DateTime.Parse(endDateStr));
             res = res.Replace("var apidata=", "").TrimEnd(';');
-            var asdasd = JsonConvert.DeserializeObject<HistoryWorth>(res);
+            var asdasd = JsonConvert.DeserializeObject<FundHistoryWorth>(res);
             float val = Business.GetNetWortByFixedDate(asdasd.content);
             Assert.IsNotNull(asdasd);
+        }
+
+        [TestMethod]
+        public void Test_FundTodayInfo()
+        {
+            var res = HttpClientHelper.FundTodayWorth("015042");
+            res = res.Replace("jsonpgz(", "").Replace(");", "");
+            var entity = JsonConvert.DeserializeObject<FundTodayEntity>(res);
+            Assert.IsNotNull(res);
         }
     }
 }
